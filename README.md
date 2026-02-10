@@ -1,6 +1,6 @@
 # UserVault – Profile Manager
 
-UserVault is a secure **Profile Management Web Application** built using **Spring MVC and JDBC**, providing complete user authentication, session handling, and profile management features with a modern UI.
+UserVault is a secure **Profile Management Web Application** built using **Spring boot and Thymeleaf**, providing complete user authentication, session handling, and profile management features with a modern UI.
 
 ---
 
@@ -12,17 +12,16 @@ UserVault is a secure **Profile Management Web Application** built using **Sprin
 * View, Edit and Delete User Profile.
 * Forgot Password & Reset Password Flow using session token.
 * Account Deletion with Confirmation.
-* Protected Routes using **Servlet Filters**
 * Input Validation & Error Handling.
-* MVC Architecture with Clean Separation of Layers like - Bean, DAO, Controller, Services, Filter, and Resources.
+* MVC Architecture with Clean Separation of Layers like - Entity, Config, Controller, Service, Repository.
 
 ---
 
 ## 🛠️ Tech Stack
 
-* **Backend:** Java, Spring MVC, JDBC
-* **Frontend:** JSP, HTML, CSS, JavaScript
-* **Database:** MySQL Workbench (JDBC-based)
+* **Backend:** Java, Spring boot, Spring Data JPA etc.
+* **Frontend:** Thymeleaf, HTML, CSS, JavaScript
+* **Database:** PostgreSQL
 * **Security:** BCrypt Password Hashing, HttpSession
 * **Server:** Apache Tomcat 10.1
 * **Build Tool:** Maven
@@ -32,49 +31,51 @@ UserVault is a secure **Profile Management Web Application** built using **Sprin
 ## 📂 Project Structure
 
 ```
-src/main
+src/main/java
 │
-├── java/in/cb
-│   ├── bean
+├── com.user_vault
+│   ├── entity
 │   │   ├── User.java
-│   │   └── UserRowMapper.java
 │   │
-│   ├── dao
-│   │   └── UserDao.java
+│   ├── repository
+│   │   └── UserRepository.java
 │   │
 │   ├── service
-│   │   └── UserService.java
+│   │   ├── UserService.java #interface
+|   |   └── impl
+|   |         └── UserServiceImpl.java
 │   │
-│   ├── filter
-│   │   └── AuthFilter.java
+│   ├── dto
+│   │   └── UserDTO.java
 │   │
-│   ├── main
-│   │   └── MyController.java
+│   ├── controller
+│   │   ├── UserController.java
+│   │   ├── AuthController.java
+│   │   └── HomeController.java
 │   │
-│   └── resources
-│       ├── JDBCConfigFile.java
+│   └── config
+│       ├── WebConfig.java
 │       └── SecurityConfig.java
 │
-├── webapp
-│   ├── css
-│   │   ├── auth.css
-│   │   ├── edit.css
-│   │   ├── home.css
-│   │   ├── index.css
-│   │   └── style.css
-│   │
-│   └── WEB-INF
-│       ├── views
-│       │   ├── login.jsp
-│       │   ├── signup.jsp
-│       │   ├── home.jsp
-│       │   ├── edit.jsp
-│       │   ├── forgot.jsp
-│       │   ├── reset-password.jsp
-│       │   └── index.jsp
-│       │
-│       ├── ds-servlet.xml
-│       └── web.xml
+├── resources
+│   ├── static
+│   │   ├── css
+|   |   |   ├── auth.css
+│   │   |   ├── edit.css
+│   │   |   ├── home.css
+│   │   |   ├── index.css
+│   │   |   └── style.css
+│   │   └── imgs #images/screenshots 
+|   |
+│   ├── templates
+│   |   ├── login.jsp
+│   │   ├── signup.jsp
+│   │   ├── home.jsp
+│   │   ├── edit.jsp
+│   │   ├── forgot.jsp
+│   │   ├── reset-password.jsp
+│   │   └── index.jsp
+│   └── application.properties #all the configurations
 │
 ├── pom.xml
 └── README.md
@@ -87,7 +88,6 @@ src/main
 * Passwords are **never stored in plain text**.
 * Implemented one way hasing password can not retrived in normal form.
 * BCrypt hashing ensures strong password protection
-* Servlet Filter (`AuthFilter`) prevents unauthorized access
 * Cache-control headers block back-button access after logout
 * Reset password flow protected via session-based validation and Token.
 
@@ -97,7 +97,7 @@ src/main
 
 1. **Signup** → User registers with hashed password
 2. **Login** → Credentials validated using BCrypt
-3. **Dashboard** → Protected via session & filter
+3. **Dashboard** → Protected via session
 4. **Profile Management** → View / Edit profile details
 5. **Forgot Password** → Identity verification
 6. **Reset Password** → Secure update
@@ -110,21 +110,24 @@ src/main
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/Chetanpatil03/profile-manager.git
+   git clone https://github.com/Chetanpatil45/user-vault.git
    ```
 
 2. Configure database in:
 
    ```
-   JDBCConfigFile.java
+   application.properties
    ```
 
 3. Update database credentials:
 
    ```properties
-   jdbc.url=jdbc:mysql://localhost:3306/your_db
-   jdbc.username=your_username
-   jdbc.password=your_password
+   spring.datasource.url=jdbc:postgresql://localhost:5432/<your_db>
+   spring.datasource.username=<user_name>
+   spring.datasource.password=<password>
+
+   spring.jpa.hibernate.ddl-auto=update
+   spring.jpa.show-sql=true
    ```
 
 4. Build the project:
@@ -136,17 +139,17 @@ src/main
 5. Deploy on **Apache Tomcat** and access:
 
    ```
-   http://localhost:8080/profile-manager
+   http://localhost:8080/uservault
    ```
 
 ---
 
 ## 📌 Key Learning Outcomes
 
-* Implemented **Spring MVC architecture**
-* Hands-on experience with **JDBC & RowMappers**
+* Implemented **Spring boot MVC architecture**
+* Hands-on experience with **Spring Data JPA**
 * Designed secure authentication flows
-* Built reusable UI components using JSP & CSS
+* Built reusable UI components using Thymeleaf & CSS
 * Applied real-world **session management & security**
 * Learn about hashing and **BCrypt**.
 
