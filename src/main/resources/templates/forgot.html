@@ -5,27 +5,17 @@
     <title>Forgot Password</title>
 
     <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/css/auth.css">
+          href="/css/auth.css"
+          th:href ="@{/css/auth.css}">
 </head>
 <body>
-    <div>
-        <script th:inline="javascript">
-            let isSuccess = [[${success}]];
-            if (isSuccess) {
-                alert("Account created please Login");
-            }
-        </script>
-    </div>
+<script th:if="${error}">
+    alert('[[${error}]]');
+</script>
 
-    <div>
-        <script th:inline="javascript">
-            let isError = [[${error}]];
-            if (isError) {
-                alert("Invalid credentials!");
-            }
-        </script>
-    </div>
-
+<script th:if="${success}">
+    alert('[[${success}]]');
+</script>
 
     <div class="container">
         <div class="signup-card">
@@ -44,18 +34,18 @@
                     <h2>Verify Account</h2>
                     <p class="login-subtitle">Enter your details to continue</p>
 
-                    <form action="forgotPassword" method="post">
+                    <form th:action="@{/forgot-pass}" method="POST">
 
                         <input type="email" name="email" placeholder="Email Address"
                                required>
-                        <input type="text" name="phone"
+                        <input type="text" name="phoneLastDigits"
                                placeholder="Last 4 digits of phone number" maxlength="4"
                                required>
 
                         <button type="submit">Verify</button>
 
                         <p class="switch">
-                            Remember your password? <a href="login">Login</a>
+                            Remember your password? <a th:href="@{/login}">Login</a>
                         </p>
 
                     </form>

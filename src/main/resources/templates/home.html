@@ -36,12 +36,10 @@
 
             <div class="switch">
                 <div class="dashboard-actions">
-                    <a href="#profileModal" class="action-link"> 👤 <span>View
-								Profile</span>
-                    </a> <a href="#deleteAccountModal" class="action-link danger"> 🗑
-                    <span>Delete Profile</span>
-                </a> <a th:href="@{/logout}" class="action-link logout"> 🚪 <span>Logout</span>
-                </a>
+                    <a href="#profileModal" class="action-link"> 👤 <span>View Profile</span></a>
+                    <a href="#deleteAccountModal" class="action-link danger"> 🗑 <span>Delete Profile</span> </a>
+                    <a href="#updatePasswordModal" class="action-link"> 🔄️ <span>Update Password</span> </a>
+                    <a th:href="@{/logout}" class="action-link logout"> 🚪 <span>Logout</span> </a>
                 </div>
 
             </div>
@@ -115,6 +113,37 @@
                 <div class="profile-actions profile-actions--buttons">
                     <a href="#" class="btn-outline">Cancel</a>
                     <button type="submit" class="btn-primary">Confirm Delete</button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- UPDATE PASSWORD MODAL -->
+<div id="updatePasswordModal" class="modal">
+    <div class="modal-content">
+        <div class="profile-simple-card">
+            <!-- Title -->
+            <h2 class="profile-name">Confirm Password</h2>
+
+            <!-- Warning Text -->
+            <p class="profile-role">This action is permanent and cannot be
+                undone.</p>
+            <form th:action="@{/update-pass}" method="POST">
+                <!-- Confirmation Info -->
+                <div class="profile-details">
+                    <p>Please type your current password to confirm password update:</p>
+                    <input type="password" name="password"
+                           placeholder="Enter your password" required />
+                </div>
+
+                <!-- Buttons -->
+                <div class="profile-actions profile-actions--buttons">
+                    <a href="#" class="btn-outline">Cancel</a>
+                    <button type="submit" class="btn-primary">Update Password</button>
                 </div>
 
             </form>

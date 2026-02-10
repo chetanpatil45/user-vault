@@ -9,4 +9,8 @@ public interface UserService {
     public User getUserById(int id);
     public User getByEmail(String email);
     public boolean register(User user);
+
+    public boolean validatePass(int id, String pass);
+
+    public boolean updatePassword(int id, String password);
 }

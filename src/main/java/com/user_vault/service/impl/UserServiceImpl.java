@@ -82,4 +82,23 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    @Override
+    public boolean validatePass(int id, String pass) {
+        User user = repository.findById(id).orElse(null);
+        return user != null && encoder.matches(pass, user.getPass());
+    }
+
+    @Override
+    public boolean updatePassword(int id, String password) {
+        if (id <= 0 || password == null) return false;
+
+        User user = repository.findById(id).orElse(null);
+        if (user != null){
+            user.setPass(encoder.encode(password));
+            repository.save(user);
+            return true;
+        }
+        return false;
+    }
+
 }

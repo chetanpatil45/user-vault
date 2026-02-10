@@ -5,11 +5,11 @@
     <title>Reset Password</title>
 
     <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/css/auth.css">
+          href="/css/auth.css"
+          th:href="@{/css/auth.css}">
 </head>
 
 <body>
-
 <div class="container">
     <div class="signup-card">
 
@@ -26,19 +26,14 @@
                 <h2>New Password</h2>
                 <p class="login-subtitle">Choose a strong password</p>
 
-                <form method="post" action="resetPassword">
+                <form method="POST" th:action="@{/reset-pass}">
 
-                    <input type="password" name="newPassword"
-                           placeholder="New Password" required> <input
-                        type="password" name="confirmPassword"
-                        placeholder="Confirm Password" required>
-
+                    <input type="password" name="newPassword" placeholder="New Password" required>
+                    <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
                     <button type="submit">Update Password</button>
-
                     <p class="switch">
-                        Back to <a href="login">Login</a>
+                        Back to <a th:href="@{/login}">Login</a>
                     </p>
-
                 </form>
             </div>
         </div>

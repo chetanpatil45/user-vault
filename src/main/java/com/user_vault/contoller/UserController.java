@@ -6,13 +6,11 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+//@RequestMapping("/uservault")
 public class UserController {
 
     @Autowired
@@ -85,6 +83,76 @@ public class UserController {
         }
         else {
             redirectAttributes.addFlashAttribute("error","Email does not matched !");
+            return "redirect:/dashboard";
+        }
+    }
+
+    @GetMapping("/reset-pass")
+    public String getResetPage(HttpSession session,
+                               RedirectAttributes redirectAttributes){
+
+        Integer userId = (Integer) session.getAttribute("resetUserId");
+
+        User user = (User) session.getAttribute("loggedInUser");
+
+        if (user != null && userId == null){
+            redirectAttributes.addFlashAttribute("error", "Session expired. Please try again.");
+            return "redirect:/dashboard";
+        }
+        else if (userId == null) {
+            redirectAttributes.addFlashAttribute("error", "Session expired. Please try again.");
+            return "redirect:/forgot-password";
+        }
+
+        return "reset";
+    }
+
+    @PostMapping("/reset-pass")
+    public String resetPassword(
+            @RequestParam String newPassword,
+            @RequestParam String confirmPassword,
+            RedirectAttributes redirectAttributes,
+            HttpSession session ){
+
+        Integer userId = (Integer) session.getAttribute("resetUserId");
+
+        if (!newPassword.equals(confirmPassword)) {
+            redirectAttributes.addFlashAttribute( "error", "Passwords do not match" );
+            return "redirect:/reset-pass";
+        }
+
+        boolean updated = userService.updatePassword(userId, newPassword);
+
+        if (!updated) {
+            redirectAttributes.addFlashAttribute( "error", "Failed to reset password" );
+            return "redirect:/reset-pass";
+        }
+
+        session.removeAttribute("resetUserId");
+        redirectAttributes.addFlashAttribute( "success", "Password reset successfully. Please login.");
+
+        return "redirect:/login";
+    }
+
+    @PostMapping("/update-pass")
+    public String updatePassword(
+            @RequestParam String password,
+            RedirectAttributes redirectAttributes,
+            HttpSession session){
+
+        User sessionUser = (User) session.getAttribute("loggedInUser");
+
+        if(sessionUser == null){
+            return "redirect:/login";
+        }
+
+        if(userService.validatePass(sessionUser.getId(), password)){
+            session.removeAttribute("resetUserId");
+            session.setAttribute("resetUserId", sessionUser.getId());
+            return "redirect:/reset-pass";
+        }
+        else {
+            redirectAttributes.addFlashAttribute("error","Password does not matched !");
             return "redirect:/dashboard";
         }
     }
