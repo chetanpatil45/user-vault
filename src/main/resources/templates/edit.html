@@ -37,6 +37,9 @@
           <option value="Student" th:selected="${user != null and user.designation == 'Student'}"> Student </option>
           <option value="Software Engineer" th:selected="${user != null and user.designation == 'Software Engineer'}"> Software Engineer</option>
           <option value="Data Analyst" th:selected="${user != null and user.designation == 'Data Analyst'}"> Data Analyst</option>
+          <option value="Teacher" th:selected="${user != null and user.designation == 'Teacher'}">Teacher</option>
+          <option value="Working Professional" th:selected="${user != null and user.designation == 'Working Professional'}">Working Professional</option>
+          <option value="Others" th:selected="${user != null and user.designation == 'Others'}">Others</option>
         </select>
 
         <select name="gender" required>

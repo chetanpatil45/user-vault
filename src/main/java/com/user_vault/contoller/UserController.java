@@ -46,8 +46,8 @@ public class UserController {
 
         User updatedUser = userService.getUserById(sessionUser.getId());
 
-        System.out.println("ID"+sessionUser.getId());
-        System.out.println(updatedUser);
+//        System.out.println("ID"+sessionUser.getId());
+//        System.out.println(updatedUser);
 
         if (updatedUser == null) {
             session.invalidate();
@@ -56,7 +56,7 @@ public class UserController {
 
         session.setAttribute("loggedInUser", updatedUser);
         redirectAttributes.addFlashAttribute("success", "Profile updated successfully");
-        System.out.println(session.getAttribute("loggedInUser"));
+//        System.out.println(session.getAttribute("loggedInUser"));
 
         return "redirect:/dashboard";
     }
@@ -101,7 +101,7 @@ public class UserController {
         }
         else if (userId == null) {
             redirectAttributes.addFlashAttribute("error", "Session expired. Please try again.");
-            return "redirect:/forgot-password";
+            return "redirect:/forgot-pass";
         }
 
         return "reset";
