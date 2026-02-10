@@ -10,24 +10,16 @@
 </head>
 <body>
 
-<div>
-    <script th:inline="javascript">
-        let isSuccess = [[${success}]];
-        if (isSuccess) {
-            alert("Account created please Login");
-        }
-    </script>
-</div>
+<script th:if="${error}">
+    alert('[[${error}]]');
+</script>
 
-<div>
-    <script th:inline="javascript">
-        let isError = [[${error}]];
-        if (isError) {
-            alert("Invalid credentials!");
-        }
-    </script>
-</div>
+<script th:if="${success}">
+    alert('[[${success}]]');
+</script>
 
+<!--<p th:text="${error}"></p>-->
+<!--<p th:text="${success}"></p>-->
 
 
 <div class="container">

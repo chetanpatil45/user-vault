@@ -41,8 +41,8 @@
 
         <select name="gender" required>
           <option value="">Select Gender</option>
-          <option value="Male" th:selected="${user != null and user.designation == 'Male'}"> Male</option>
-          <option value="Female" th:selected="${user != null and user.designation == 'Female'}"> Female</option>
+          <option value="Male" th:selected="${user != null and user.gender == 'Male'}"> Male</option>
+          <option value="Female" th:selected="${user != null and user.gender == 'Female'}"> Female</option>
         </select>
 
         <textarea name="bio" th:text="${user != null ? user.bio : '' }"></textarea>
@@ -63,21 +63,13 @@
   </div>
 </div>
 
-<!--<%-->
-<!--String success = (String) request.getAttribute("success");-->
-<!--String error = (String) request.getAttribute("error");-->
+<script th:if="${error}">
+  alert('[[${error}]]');
+</script>
 
-<!--if (success != null) {-->
-<!--%>-->
-<!--<div style="color: green;"><%=success%></div>-->
-<!--<%-->
-<!--}-->
-<!--if (error != null) {-->
-<!--%>-->
-<!--<div style="color: red;"><%=error%></div>-->
-<!--<%-->
-<!--}-->
-<!--%>-->
+<script th:if="${success}">
+  alert('[[${success}]]');
+</script>
 
 </body>
 </html>

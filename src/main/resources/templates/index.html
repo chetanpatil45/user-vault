@@ -26,5 +26,13 @@
     </div>
 </div>
 
+<script th:if="${error}">
+    alert('[[${error}]]');
+</script>
+
+<script th:if="${success}">
+    alert('[[${success}]]');
+</script>
+
 </body>
 </html>

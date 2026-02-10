@@ -107,7 +107,7 @@
                 <div class="profile-details">
                     <p>Please type your email address to confirm deletion:</p>
 
-                    <input type="email" name="confirmEmail"
+                    <input type="email" name="email"
                            placeholder="Enter your email" required />
                 </div>
 
@@ -124,15 +124,13 @@
     </div>
 </div>
 
-<div>
-    <script th:inline="javascript">
-        let isError = [[${error}]];
-        if (isError) {
-            alert(error);
-        }
-    </script>
-</div>
+<script th:if="${error}">
+    alert('[[${error}]]');
+</script>
 
+<script th:if="${success}">
+    alert('[[${success}]]');
+</script>
 
 
 <script>

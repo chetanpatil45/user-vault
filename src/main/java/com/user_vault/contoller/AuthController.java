@@ -5,10 +5,8 @@ import com.user_vault.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AuthController {
@@ -18,23 +16,15 @@ public class AuthController {
     @PostMapping("/login")
     public String login(@RequestParam String email,
                         @RequestParam String password,
+                        RedirectAttributes redirectAttributes,
                         HttpSession session) {
 
-//        User user = userService.authenticate(email, password);
+        User user = userService.authenticate(email, password);
 
-//        if (user == null) {
-//            return "redirect:/login?error";
-//        }
-
-        User user = new User();
-        user.setEmail(email);
-        user.setPass(password);
-        user.setName("Chetan");
-        user.setGender("Male");
-        user.setBio("Passionate Student");
-        user.setDesignation("Student");
-        user.setPhone("9284691048");
-//        user.set
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("error","User not found");
+            return "redirect:/login";
+        }
 
         session.setAttribute("loggedInUser", user);
         return "redirect:/dashboard";
@@ -42,8 +32,16 @@ public class AuthController {
 
 
     @PostMapping("/signup")
-    public String signup(){
-        return "";
+    public String editProfile(@ModelAttribute User user,
+                              HttpSession session,
+                              RedirectAttributes redirectAttributes) {
+
+        if (userService.register(user)) {
+            return "redirect:/login?success=1";
+        } else {
+            redirectAttributes.addAttribute("error", "Failed to create account");
+            return "signup";
+        }
     }
 
     @GetMapping("/login")

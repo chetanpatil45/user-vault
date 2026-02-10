@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -28,19 +29,16 @@ public class UserController {
     }
 
     @PostMapping("/edit")
-    public String editData(@ModelAttribute User user,
-                           HttpSession session, Model model,
+    public String editProfile(@ModelAttribute User user,
+                           HttpSession session,
                            RedirectAttributes redirectAttributes){
 
         User sessionUser = (User) session.getAttribute("loggedInUser");
-
         if (sessionUser == null) {
             return "redirect:/login";
         }
 
-        // 🔐 Force ID from session (prevent tampering)
         user.setId(sessionUser.getId());
-
         boolean updated = userService.updateUser(user);
 
         if (!updated) {
@@ -48,24 +46,46 @@ public class UserController {
             return "redirect:/edit";
         }
 
-        // ✅ Fetch fresh user from DB
         User updatedUser = userService.getUserById(sessionUser.getId());
+
+        System.out.println("ID"+sessionUser.getId());
+        System.out.println(updatedUser);
 
         if (updatedUser == null) {
             session.invalidate();
             return "redirect:/login";
         }
 
-
-        // ✅ Update session with complete object
         session.setAttribute("loggedInUser", updatedUser);
-
         redirectAttributes.addFlashAttribute("success", "Profile updated successfully");
         System.out.println(session.getAttribute("loggedInUser"));
-        return "redirect:/home";
 
         return "redirect:/dashboard";
     }
 
+    @PostMapping("/deleteProfile")
+    public String deleteProfile(@RequestParam String email,
+                                HttpSession session,
+                                RedirectAttributes redirectAttributes){
+        User sessionUser = (User) session.getAttribute("loggedInUser");
 
+        if(sessionUser == null){
+            return "redirect:/login";
+        }
+
+        if(email.equals(sessionUser.getEmail())){
+            if (userService.deleteUser(sessionUser)){
+                session.invalidate();
+                redirectAttributes.addFlashAttribute("success","Profile deleted");
+                return "redirect:/";
+            }else {
+                redirectAttributes.addFlashAttribute("error", "Delete operation Failed");
+                return "redirect:/dashboard";
+            }
+        }
+        else {
+            redirectAttributes.addFlashAttribute("error","Email does not matched !");
+            return "redirect:/dashboard";
+        }
+    }
 }

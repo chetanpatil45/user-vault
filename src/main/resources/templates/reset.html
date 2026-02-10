@@ -45,33 +45,13 @@
 
     </div>
 </div>
-
-<%
-String error = (String) request.getAttribute("error");
-String success = (String) request.getAttribute("success");
-%>
-
-<%
-if (error != null) {
-%>
-<script>
-    alert("<%=error%>");
+<script th:if="${error}">
+    alert('[[${error}]]');
 </script>
-<%
-}
-%>
 
-<%
-if (success != null) {
-%>
-<script>
-    alert("<%=success%>
-    ");
+<script th:if="${success}">
+    alert('[[${success}]]');
 </script>
-<%
-}
-%>
-
 
 </body>
 </html>

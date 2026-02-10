@@ -9,15 +9,13 @@
 </head>
 <body>
 
-<div>
-    <script th:inline="javascript">
+<script th:if="${error}">
+    alert('[[${error}]]');
+</script>
 
-        let isError = [[${error}]];
-        if (isError) {
-            alert("Failed to create Account!");
-        }
-    </script>
-</div>
+<script th:if="${success}">
+    alert('[[${success}]]');
+</script>
 
 <div class="container">
     <div class="signup-card">
